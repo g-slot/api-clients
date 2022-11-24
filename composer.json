@@ -14,7 +14,7 @@
     "minimum-stability": "dev",
     "require": {
         "psr/http-message": "^1.0",
-        "symfony/http-foundation": "^6.1",
+        "symfony/http-foundation": "^5.4",
         "guzzlehttp/guzzle": "^7.5"
     },
     "require-dev": {
