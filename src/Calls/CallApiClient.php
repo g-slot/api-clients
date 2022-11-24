@@ -14,10 +14,11 @@ class CallApiClient extends BaseApiClient
      * @param  array  $calls
      *
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function import(int $managerId, int $cityId, array $calls): array
     {
-        return $this->post('calls', [
+        return $this->postRequest('calls', [
             'manager_id' => $managerId,
             'city_id'    => $cityId,
             'calls'      => $calls,
@@ -28,10 +29,11 @@ class CallApiClient extends BaseApiClient
      * @param  array  $request
      *
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function search(array $request): array
     {
-        return $this->get('calls', $request);
+        return $this->getRequest('calls', $request);
     }
 
     /**
@@ -40,10 +42,11 @@ class CallApiClient extends BaseApiClient
      * @param  \DateTimeImmutable  $to
      *
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function statistics(int $managerId, \DateTimeImmutable $from, \DateTimeImmutable $to): array
     {
-        return $this->get('statistics/calls', [
+        return $this->getRequest('statistics/calls', [
             'manager_id' => $managerId,
             'from'       => $from->format('Y-m-d H:i:s'),
             'to'         => $to->format('Y-m-d H:i:s'),

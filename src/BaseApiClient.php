@@ -6,6 +6,7 @@ namespace Gilmon\ApiClients;
 
 use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\StreamInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class BaseApiClient
 {
@@ -58,7 +59,7 @@ class BaseApiClient
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function get(string $endpoint, array $query = []): array
+    protected function getRequest(string $endpoint, array $query = []): array
     {
         return $this->request('GET', $endpoint, ['query' => $query]);
     }
@@ -70,7 +71,7 @@ class BaseApiClient
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function patch(string $endpoint, array $data = []): array
+    protected function patchRequest(string $endpoint, array $data = []): array
     {
         return $this->request('PATCH', $endpoint, ['json' => $data]);
     }
@@ -82,7 +83,7 @@ class BaseApiClient
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function put(string $endpoint, array $data = []): array
+    protected function putRequest(string $endpoint, array $data = []): array
     {
         return $this->request('PUT', $endpoint, ['json' => $data]);
     }
@@ -93,7 +94,7 @@ class BaseApiClient
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function delete(string $endpoint): void
+    protected function deleteRequest(string $endpoint): void
     {
         $this->request('DELETE', $endpoint);
     }
@@ -105,7 +106,7 @@ class BaseApiClient
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function post(string $endpoint, array $data = []): array
+    protected function postRequest(string $endpoint, array $data = []): array
     {
         return $this->request('POST', $endpoint, ['json' => $data]);
     }
@@ -117,7 +118,7 @@ class BaseApiClient
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function multipartPost(string $endpoint, array $data = []): array
+    protected function multipartPostRequest(string $endpoint, array $data = []): array
     {
         return $this->request('POST', $endpoint, [
             'multipart' => $this->prepareMultiPartRequest($data),
@@ -132,9 +133,18 @@ class BaseApiClient
     private function prepareMultiPartRequest(array $data): array
     {
         return array_map(function ($key) use ($data) {
+            $field = $data[$key];
+            if ($field instanceof UploadedFile) {
+                return [
+                    'name'     => $key,
+                    'contents' => $field->getContent(),
+                    'filename' => $field->getClientOriginalName(),
+                ];
+            }
+
             return [
                 'name'     => $key,
-                'contents' => $data[$key],
+                'contents' => $field,
             ];
         }, array_keys($data));
     }

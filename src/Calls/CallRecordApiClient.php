@@ -20,7 +20,7 @@ class CallRecordApiClient extends BaseApiClient
      */
     public function upload(int $managerId, string $filename, string $phone, \DateTimeImmutable $date): array
     {
-        return $this->multipartPost('records', [
+        return $this->multipartPostRequest('records', [
             'manager_id' => $managerId,
             'file' => Utils::tryFopen($filename, 'r'),
             'phone' => $phone,
@@ -36,6 +36,6 @@ class CallRecordApiClient extends BaseApiClient
      */
     public function find(string $uuid): array
     {
-        return $this->get("records/$uuid");
+        return $this->getRequest("records/$uuid");
     }
 }
