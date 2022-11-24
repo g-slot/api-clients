@@ -5,51 +5,42 @@ declare(strict_types=1);
 namespace Gilmon\ApiClients\Calls;
 
 use Gilmon\ApiClients\BaseApiClient;
+use Gilmon\ApiClients\Calls\Requests\CallsImportRequest;
+use Gilmon\ApiClients\Calls\Requests\CallsSearchRequest;
+use Gilmon\ApiClients\Calls\Requests\CallsStatisticsRequest;
 
 class CallApiClient extends BaseApiClient
 {
     /**
-     * @param  int  $managerId
-     * @param  int  $cityId
-     * @param  array  $calls
+     * @param  \Gilmon\ApiClients\Calls\Requests\CallsImportRequest  $request
      *
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function import(int $managerId, int $cityId, array $calls): array
+    public function import(CallsImportRequest $request): array
     {
-        return $this->postRequest('calls', [
-            'manager_id' => $managerId,
-            'city_id'    => $cityId,
-            'calls'      => $calls,
-        ]);
+        return $this->postRequest('calls', $request->all());
     }
 
     /**
-     * @param  array  $request
+     * @param  \Gilmon\ApiClients\Calls\Requests\CallsSearchRequest  $request
      *
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function search(array $request): array
+    public function search(CallsSearchRequest $request): array
     {
-        return $this->getRequest('calls', $request);
+        return $this->getRequest('calls', $request->all());
     }
 
     /**
-     * @param  int  $managerId
-     * @param  \DateTimeImmutable  $from
-     * @param  \DateTimeImmutable  $to
+     * @param  \Gilmon\ApiClients\Calls\Requests\CallsStatisticsRequest  $request
      *
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function statistics(int $managerId, \DateTimeImmutable $from, \DateTimeImmutable $to): array
+    public function statistics(CallsStatisticsRequest $request): array
     {
-        return $this->getRequest('statistics/calls', [
-            'manager_id' => $managerId,
-            'from'       => $from->format('Y-m-d H:i:s'),
-            'to'         => $to->format('Y-m-d H:i:s'),
-        ]);
+        return $this->getRequest('calls/statistics', $request->all());
     }
 }

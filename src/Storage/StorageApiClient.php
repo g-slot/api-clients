@@ -19,7 +19,7 @@ class StorageApiClient extends BaseApiClient
     public function upload(string|UploadedFile $file): array
     {
         return $this->multipartPostRequest('files', [
-            'file' => is_String($file) ? Utils::tryFopen($file, 'r') : $file
+            'file' => is_String($file) ? Utils::tryFopen($file, 'r') : $file,
         ]);
     }
 

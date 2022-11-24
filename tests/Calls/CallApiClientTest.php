@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Gilmon\Tests\ApiClients\Calls;
 
 use Gilmon\ApiClients\Calls\CallApiClient;
+use Gilmon\ApiClients\Calls\Requests\CallsImportRequest;
+use Gilmon\ApiClients\Calls\Requests\CallsSearchRequest;
+use Gilmon\ApiClients\Calls\Requests\CallsStatisticsRequest;
 use Gilmon\Tests\ApiClients\ApiTestCase;
 use Gilmon\Tests\ApiClients\Mock\MockHandler;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Uri;
 
 class CallApiClientTest extends ApiTestCase
 {
@@ -24,8 +28,15 @@ class CallApiClientTest extends ApiTestCase
             'handler'  => $mockHandler,
         ]);
 
+
+        $statisticsRequest = CallsStatisticsRequest::fromArray([
+            'manager_id' => 101,
+            'from'       => 'foo',
+            'to'         => 'bar',
+        ]);
+
         $callApiClient = new CallApiClient($client);
-        $callApiClient->statistics(100, new \DateTimeImmutable, new \DateTimeImmutable);
+        $callApiClient->statistics($statisticsRequest);
 
         $request = $mockHandler->getLastRequest();
 
@@ -33,8 +44,9 @@ class CallApiClientTest extends ApiTestCase
         $this->assertContentTypeJson($request);
 
         $this->assertSame('GET', $request->getMethod());
+        $this->assertSame(http_build_query($statisticsRequest->toArray()), $request->getUri()->getQuery());
         $this->assertSame($this->baseHost, $request->getUri()->getHost());
-        $this->assertSame('/api/v1/statistics/calls', $request->getUri()->getPath());
+        $this->assertSame('/api/v1/calls/statistics', $request->getUri()->getPath());
     }
 
     public function testPostImportCalls()
@@ -46,16 +58,24 @@ class CallApiClientTest extends ApiTestCase
         ]);
 
         $callApiClient = new CallApiClient($client);
-        $callApiClient->import(100, 3, []);
 
-        $request = $mockHandler->getLastRequest();
+        $importRequest = CallsImportRequest::fromArray([
+            'manager_id' => 100,
+            'city_id'    => 3,
+            'calls'      => [],
+        ]);
 
-        $this->assertAcceptJson($request);
-        $this->assertContentTypeJson($request);
+        $callApiClient->import($importRequest);
 
-        $this->assertSame('POST', $request->getMethod());
-        $this->assertSame($this->baseHost, $request->getUri()->getHost());
-        $this->assertSame('/api/v1/calls', $request->getUri()->getPath());
+        $lastRequest = $mockHandler->getLastRequest();
+
+        $this->assertAcceptJson($lastRequest);
+        $this->assertContentTypeJson($lastRequest);
+
+        $this->assertSame('POST', $lastRequest->getMethod());
+        $this->assertSame(json_encode($importRequest->toArray()), $lastRequest->getBody()->getContents());
+        $this->assertSame($this->baseHost, $lastRequest->getUri()->getHost());
+        $this->assertSame('/api/v1/calls', $lastRequest->getUri()->getPath());
     }
 
     public function testSearch()
@@ -67,16 +87,22 @@ class CallApiClientTest extends ApiTestCase
         ]);
 
         $callApiClient = new CallApiClient($client);
-        $callApiClient->search(['test' => 'foo']);
+        $searchRequest = CallsSearchRequest::fromArray([
+            'manager_id' => 100,
+            'city_id'    => 3,
+            'from'       => 'foo',
+            'to'         => 'bar',
+        ]);
+        $callApiClient->search($searchRequest);
 
-        $request = $mockHandler->getLastRequest();
+        $lastRequest = $mockHandler->getLastRequest();
 
-        $this->assertAcceptJson($request);
-        $this->assertContentTypeJson($request);
+        $this->assertAcceptJson($lastRequest);
+        $this->assertContentTypeJson($lastRequest);
 
-        $this->assertSame('test=foo', $request->getUri()->getQuery());
-        $this->assertSame('GET', $request->getMethod());
-        $this->assertSame($this->baseHost, $request->getUri()->getHost());
-        $this->assertSame('/api/v1/calls', $request->getUri()->getPath());
+        $this->assertSame(http_build_query($searchRequest->toArray()), $lastRequest->getUri()->getQuery());
+        $this->assertSame('GET', $lastRequest->getMethod());
+        $this->assertSame($this->baseHost, $lastRequest->getUri()->getHost());
+        $this->assertSame('/api/v1/calls', $lastRequest->getUri()->getPath());
     }
 }

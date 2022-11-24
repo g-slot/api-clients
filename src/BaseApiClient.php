@@ -15,6 +15,33 @@ class BaseApiClient
     }
 
     /**
+     * @param  string  $endpoint
+     * @param  array  $query
+     *
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function getRequest(string $endpoint, array $query = []): array
+    {
+        return $this->request('GET', $endpoint, ['query' => $query]);
+    }
+
+    /**
+     * @param  string  $method
+     * @param  string  $endpoint
+     * @param  array  $options
+     *
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function request(string $method, string $endpoint, array $options = []): array
+    {
+        $options['headers'] = $this->applyHeaders($options['headers'] ?? []);
+        $response = $this->client->request($method, $endpoint, $options);
+        return $this->parseResult($response->getBody());
+    }
+
+    /**
      * @param  array  $headers
      *
      * @return array|string[]
@@ -35,33 +62,6 @@ class BaseApiClient
     protected function parseResult(StreamInterface $body): array
     {
         return json_decode($body->getContents(), true) ?? [];
-    }
-
-    /**
-     * @param  string  $method
-     * @param  string  $endpoint
-     * @param  array  $options
-     *
-     * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    protected function request(string $method, string $endpoint, array $options = []): array
-    {
-        $options['headers'] = $this->applyHeaders($options['headers'] ?? []);
-        $response = $this->client->request($method, $endpoint, $options);
-        return $this->parseResult($response->getBody());
-    }
-
-    /**
-     * @param  string  $endpoint
-     * @param  array  $query
-     *
-     * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    protected function getRequest(string $endpoint, array $query = []): array
-    {
-        return $this->request('GET', $endpoint, ['query' => $query]);
     }
 
     /**
