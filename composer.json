@@ -1,0 +1,30 @@
+{
+    "name": "gilmon/api-clients",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Gilmon\\ApiClients\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gilmon\\Tests\\ApiClients\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "psr/http-message": "1.0.x-dev",
+        "symfony/http-foundation": "6.2.x-dev",
+        "guzzlehttp/guzzle": "7.5.x-dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "10.0.x-dev",
+        "symfony/var-dumper": "6.2.x-dev",
+        "ramsey/uuid": "5.x-dev"
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit --coverage-text",
+        "test-coverage": "./vendor/bin/phpunit --coverage-text --coverage-cobertura=coverage.cobertura.xml",
+        "test-html-coverage": "./vendor/bin/phpunit --coverage-html=html-coverage"
+    }
+}
