@@ -10,7 +10,6 @@
         </testsuite>
     </testsuites>
     <coverage cacheDirectory="/tmp/api-clients-coverage"
-              includeUncoveredFiles="false"
               ignoreDeprecatedCodeUnits="true"
               disableCodeCoverageIgnore="true">
         <include>
