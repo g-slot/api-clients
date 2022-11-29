@@ -14,7 +14,7 @@
     "minimum-stability": "dev",
     "require": {
         "psr/http-message": "^1.0",
-        "symfony/http-foundation": "^5.4",
+        "symfony/http-foundation": "^6.0",
         "guzzlehttp/guzzle": "^7.5",
         "spatie/data-transfer-object": "3.8"
     },
