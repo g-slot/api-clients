@@ -1,6 +1,7 @@
 {
     "name": "gilmon/api-clients",
     "type": "library",
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Gilmon\\ApiClients\\": "src/"
@@ -11,7 +12,6 @@
             "Gilmon\\Tests\\ApiClients\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
     "require": {
         "psr/http-message": "^1.0",
         "symfony/http-foundation": "^6.0",
