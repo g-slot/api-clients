@@ -1,5 +1,5 @@
 {
-    "name": "gilmon/api-clients",
+    "name": "g-slot/api-clients",
     "type": "library",
     "minimum-stability": "dev",
     "autoload": {
