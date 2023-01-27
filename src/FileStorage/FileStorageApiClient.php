@@ -8,7 +8,7 @@ use Gilmon\ApiClients\BaseApiClient;
 use GuzzleHttp\Psr7\Utils;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class StorageApiClient extends BaseApiClient
+class FileStorageApiClient extends BaseApiClient
 {
     /**
      * @param  string|UploadedFile  $file
