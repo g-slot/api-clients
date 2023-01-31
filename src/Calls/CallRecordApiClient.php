@@ -6,24 +6,30 @@ namespace Gilmon\ApiClients\Calls;
 
 use DateTimeImmutable;
 use Gilmon\ApiClients\BaseApiClient;
-use GuzzleHttp\Psr7\Utils;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CallRecordApiClient extends BaseApiClient
 {
     /**
      * @param  int  $managerId
-     * @param  string  $filename
+     * @param  string  $file
      * @param  string  $phone
      * @param  \DateTimeImmutable  $date
      *
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function upload(int $managerId, string $filename, string $phone, DateTimeImmutable $date): array
-    {
+    public function upload(
+        int $managerId,
+        int $cityId,
+        UploadedFile $file,
+        string $phone,
+        DateTimeImmutable $date
+    ): array {
         return $this->multipartPostRequest('records', [
             'manager_id' => $managerId,
-            'file'       => Utils::tryFopen($filename, 'r'),
+            'city_id'    => $cityId,
+            'file'       => $file,
             'phone'      => $phone,
             'date'       => $date->format('Y-m-d H:i:s'),
         ]);
