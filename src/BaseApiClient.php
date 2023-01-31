@@ -41,6 +41,12 @@ class BaseApiClient
         return $this->parseResult($response->getBody());
     }
 
+    protected function requestJson(string $method, string $endpoint, array $options = []): array
+    {
+        $options['headers']['Content-Type'] = 'application/json';
+        return $this->request($method, $endpoint, $options);
+    }
+
     /**
      * @param  array  $headers
      *
@@ -49,7 +55,6 @@ class BaseApiClient
     protected function applyHeaders(array $headers): array
     {
         return $headers + [
-                'Content-Type' => 'application/json',
                 'Accept'       => 'application/json',
             ];
     }
@@ -108,7 +113,7 @@ class BaseApiClient
      */
     protected function postRequest(string $endpoint, array $data = []): array
     {
-        return $this->request('POST', $endpoint, ['json' => $data]);
+        return $this->requestJson('POST', $endpoint, ['json' => $data]);
     }
 
     /**
@@ -121,7 +126,7 @@ class BaseApiClient
     protected function multipartPostRequest(string $endpoint, array $data = []): array
     {
         return $this->request('POST', $endpoint, [
-            'multipart' => $this->prepareMultiPartRequest($data),
+            'multipart' => $this->prepareMultiPartRequest($data)
         ]);
     }
 
