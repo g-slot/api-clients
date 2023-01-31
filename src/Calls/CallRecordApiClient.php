@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Gilmon\ApiClients\Calls;
 
-use DateTimeImmutable;
 use Gilmon\ApiClients\BaseApiClient;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CallRecordApiClient extends BaseApiClient
 {
