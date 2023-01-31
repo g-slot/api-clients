@@ -19,20 +19,8 @@ class CallRecordApiClient extends BaseApiClient
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function upload(
-        int $managerId,
-        int $cityId,
-        UploadedFile $file,
-        string $phone,
-        DateTimeImmutable $date
-    ): array {
-        return $this->multipartPostRequest('records', [
-            'manager_id' => $managerId,
-            'city_id'    => $cityId,
-            'file'       => $file,
-            'phone'      => $phone,
-            'date'       => $date->format('Y-m-d H:i:s'),
-        ]);
+    public function upload($request): array {
+        return $this->multipartPostRequest('records', $request);
     }
 
     /**
