@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Gilmon\ApiClients\Calls;
 
 use Gilmon\ApiClients\BaseApiClient;
+use Gilmon\ApiClients\Calls\Requests\CallRecordsSearchRequest;
 
 class CallRecordApiClient extends BaseApiClient
 {
@@ -19,6 +20,17 @@ class CallRecordApiClient extends BaseApiClient
      */
     public function upload($request): array {
         return $this->multipartPostRequest('records', $request);
+    }
+
+    /**
+     * @param  CallRecordsSearchRequest  $request
+     *
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function search(CallRecordsSearchRequest $request): array
+    {
+        return $this->getRequest("records", $request->all());
     }
 
     /**
