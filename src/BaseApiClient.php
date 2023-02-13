@@ -37,10 +37,28 @@ class BaseApiClient
     protected function request(string $method, string $endpoint, array $options = []): array
     {
         $options['headers'] = $this->applyHeaders($options['headers'] ?? []);
-        $response = $this->client->request($method, $endpoint, $options);
+        $response = $this->client->request($method, $this->buildEndpoint($endpoint), $options);
         return $this->parseResult($response->getBody());
     }
 
+    /**
+     * @param  string  $endpoint
+     *
+     * @return string
+     */
+    protected function buildEndpoint(string $endpoint): string
+    {
+        return sprintf('api/v1/%s', $endpoint);
+    }
+
+    /**
+     * @param  string  $method
+     * @param  string  $endpoint
+     * @param  array  $options
+     *
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     protected function requestJson(string $method, string $endpoint, array $options = []): array
     {
         $options['headers']['Content-Type'] = 'application/json';
