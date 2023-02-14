@@ -43,4 +43,15 @@ class CallApiClient extends BaseApiClient
     {
         return $this->getRequest('calls/statistics', $request->all());
     }
+
+    /**
+     * @param  \Gilmon\ApiClients\Calls\Requests\CallsStatisticsRequest  $request
+     *
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function extendedStatistics(CallsStatisticsRequest $request): array
+    {
+        return $this->getRequest('calls/statistics/extended', $request->all());
+    }
 }
