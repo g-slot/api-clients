@@ -8,6 +8,7 @@ use Gilmon\ApiClients\BaseApiClient;
 use Gilmon\ApiClients\Calls\Requests\CallsImportRequest;
 use Gilmon\ApiClients\Calls\Requests\CallsSearchRequest;
 use Gilmon\ApiClients\Calls\Requests\CallsStatisticsRequest;
+use Gilmon\ApiClients\Calls\Requests\ManagerCallsStatisticsRequest;
 
 class CallApiClient extends BaseApiClient
 {
@@ -34,18 +35,18 @@ class CallApiClient extends BaseApiClient
     }
 
     /**
-     * @param  \Gilmon\ApiClients\Calls\Requests\CallsStatisticsRequest  $request
+     * @param  \Gilmon\ApiClients\Calls\Requests\ManagerCallsStatisticsRequest  $request
      *
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function statistics(CallsStatisticsRequest $request): array
+    public function statistics(ManagerCallsStatisticsRequest $request): array
     {
         return $this->getRequest('calls/statistics', $request->all());
     }
 
     /**
-     * @param  \Gilmon\ApiClients\Calls\Requests\CallsStatisticsRequest  $request
+     * @param  \Gilmon\ApiClients\Calls\Requests\ManagerCallsStatisticsRequest  $request
      *
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException

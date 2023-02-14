@@ -7,7 +7,7 @@ namespace Gilmon\Tests\ApiClients\Calls;
 use Gilmon\ApiClients\Calls\CallApiClient;
 use Gilmon\ApiClients\Calls\Requests\CallsImportRequest;
 use Gilmon\ApiClients\Calls\Requests\CallsSearchRequest;
-use Gilmon\ApiClients\Calls\Requests\CallsStatisticsRequest;
+use Gilmon\ApiClients\Calls\Requests\ManagerCallsStatisticsRequest;
 use Gilmon\Tests\ApiClients\ApiTestCase;
 use Gilmon\Tests\ApiClients\Mock\MockHandler;
 use GuzzleHttp\Client;
@@ -29,7 +29,7 @@ class CallApiClientTest extends ApiTestCase
         ]);
 
 
-        $statisticsRequest = CallsStatisticsRequest::fromArray([
+        $statisticsRequest = ManagerCallsStatisticsRequest::fromArray([
             'manager_id' => 101,
             'from'       => 'foo',
             'to'         => 'bar',
